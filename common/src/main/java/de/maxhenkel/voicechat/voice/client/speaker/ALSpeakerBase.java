@@ -151,11 +151,10 @@ public abstract class ALSpeakerBase implements Speaker {
     }
 
     protected void setPositionSync(@Nullable Vec3 soundPos, float maxDistance) {
-        Camera camera = mc.gameRenderer.getMainCamera();
-        Vec3 position = camera.getPosition();
-        Vector3f look = camera.getLookVector();
-        Vector3f up = camera.getUpVector();
-        AL11.alListener3f(AL11.AL_POSITION, (float) position.x, (float) position.y, (float) position.z);
+        Vector3f position = mc.player.position().toVector3f();
+        Vector3f look = mc.player.getLookAngle().toVector3f();
+        Vector3f up = new Vector3f(0.0F, 1.0F, 0.0F);
+        AL11.alListener3f(AL11.AL_POSITION, position.x, position.y, position.z);
         SoundManager.checkAlError();
         AL11.alListenerfv(AL11.AL_ORIENTATION, new float[]{look.x(), look.y(), look.z(), up.x(), up.y(), up.z()});
         SoundManager.checkAlError();

@@ -205,7 +205,7 @@ public class AudioChannel extends Thread {
 
             short[] processedMonoData = PluginManager.instance().onReceiveEntityClientSound(uuid, monoData, soundPacket.isWhispering(), soundPacket.getDistance());
 
-            if (pos.distanceTo(minecraft.gameRenderer.getMainCamera().getPosition()) > soundPacket.getDistance() + 1D) {
+            if (pos.distanceTo(minecraft.player.position()) > soundPacket.getDistance() + 1D) {
                 return;
             }
 
@@ -216,7 +216,7 @@ public class AudioChannel extends Thread {
             appendRecording(() -> PositionalAudioUtils.convertToStereoForRecording(soundPacket.getDistance(), pos, processedMonoData, deathVolume));
         } else if (packet instanceof LocationSoundPacket p) {
             short[] processedMonoData = PluginManager.instance().onReceiveLocationalClientSound(uuid, monoData, p.getLocation(), p.getDistance());
-            if (p.getLocation().distanceTo(minecraft.gameRenderer.getMainCamera().getPosition()) > p.getDistance() + 1D) {
+            if (p.getLocation().distanceTo(minecraft.player.position()) > p.getDistance() + 1D) {
                 return;
             }
             speaker.play(processedMonoData, volume, p.getLocation(), p.getCategory(), p.getDistance());
