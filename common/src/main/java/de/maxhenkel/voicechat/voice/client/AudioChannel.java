@@ -217,9 +217,12 @@ public class AudioChannel extends Thread {
                 // Static, but with volume adjusted for distance
                 volume *= distanceVolume;
                 speaker.play(processedMonoData, volume, soundPacket.getCategory());
+                if (distanceVolume > 0F) {
+                    client.getTalkCache().updateTalking(uuid, soundPacket.isWhispering());
+                }
+                appendRecording(() -> PositionalAudioUtils.convertToStereoForRecording(soundPacket.getDistance(), FreecamUtil.getReferencePoint(), 0, pos, processedMonoData, deathVolume));
                 return;
             }
-
 
             speaker.play(processedMonoData, volume, pos, soundPacket.getCategory(), soundPacket.getDistance());
             if (distanceVolume > 0F) {
