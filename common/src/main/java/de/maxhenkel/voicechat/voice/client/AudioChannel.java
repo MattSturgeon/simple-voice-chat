@@ -190,13 +190,6 @@ public class AudioChannel extends Thread {
             client.getTalkCache().updateTalking(uuid, false);
             appendRecording(() -> PositionalAudioUtils.convertToStereo(processedMonoData));
         } else if (packet instanceof PlayerSoundPacket soundPacket) {
-            if (FreecamUtil.isFreecamEnabled()) {
-                short[] processedMonoData = PluginManager.instance().onReceiveStaticClientSound(uuid, monoData);
-                speaker.play(processedMonoData, volume, soundPacket.getCategory());
-                client.getTalkCache().updateTalking(uuid, soundPacket.isWhispering());
-                appendRecording(() -> PositionalAudioUtils.convertToStereo(processedMonoData));
-                return;
-            }
             if (player == null) {
                 return;
             }
@@ -218,8 +211,18 @@ public class AudioChannel extends Thread {
                 return;
             }
 
+            float distanceVolume = PositionalAudioUtils.getDistanceVolume(soundPacket.getDistance(), pos);
+
+            if (FreecamUtil.isFreecamEnabled()) {
+                // Static, but with volume adjusted for distance
+                volume *= distanceVolume;
+                speaker.play(processedMonoData, volume, soundPacket.getCategory());
+                return;
+            }
+
+
             speaker.play(processedMonoData, volume, pos, soundPacket.getCategory(), soundPacket.getDistance());
-            if (PositionalAudioUtils.getDistanceVolume(soundPacket.getDistance(), pos) > 0F) {
+            if (distanceVolume > 0F) {
                 client.getTalkCache().updateTalking(uuid, soundPacket.isWhispering());
             }
             appendRecording(() -> PositionalAudioUtils.convertToStereoForRecording(soundPacket.getDistance(), pos, processedMonoData, deathVolume));
