@@ -1,6 +1,7 @@
 package de.maxhenkel.voicechat.voice.client;
 
 import de.maxhenkel.voicechat.VoicechatClient;
+import de.maxhenkel.voicechat.integration.freecam.FreecamUtil;
 import de.maxhenkel.voicechat.voice.client.speaker.AudioType;
 import de.maxhenkel.voicechat.voice.common.Utils;
 import net.minecraft.client.Camera;
@@ -58,6 +59,16 @@ public class PositionalAudioUtils {
     }
 
     /**
+     * Measures the distance to the provided position
+     *
+     * @param pos the position to be measured
+     * @return the distance to the position
+     */
+    public static double getDistanceTo(Vec3 pos) {
+        return FreecamUtil.getReferencePoint().distanceTo(pos);
+    }
+
+    /**
      * Gets the volume for the provided distance
      *
      * @param maxDistance the maximum distance of the sound
@@ -65,7 +76,7 @@ public class PositionalAudioUtils {
      * @return the resulting audio volume
      */
     public static float getDistanceVolume(float maxDistance, Vec3 pos) {
-        return getDistanceVolume(maxDistance, mc.gameRenderer.getMainCamera().getPosition(), pos);
+        return getDistanceVolume(maxDistance, FreecamUtil.getReferencePoint(), pos);
     }
 
     /**
