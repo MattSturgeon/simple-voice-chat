@@ -8,6 +8,9 @@ public class FreecamUtil {
 
     private static final Minecraft mc = Minecraft.getInstance();
 
+    /**
+     * @return whether freecam is currently in use
+     */
     public static boolean isFreecamEnabled() {
         // FIXME once testing is complete, remove `freecamSupport` config option
         return VoicechatClient.CLIENT_CONFIG.freecamSupport.get() &&
