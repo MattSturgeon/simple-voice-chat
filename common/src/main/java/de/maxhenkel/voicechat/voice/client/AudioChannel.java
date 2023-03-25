@@ -220,7 +220,8 @@ public class AudioChannel extends Thread {
                 if (distanceVolume > 0F) {
                     client.getTalkCache().updateTalking(uuid, soundPacket.isWhispering());
                 }
-                appendRecording(() -> PositionalAudioUtils.convertToStereoForRecording(soundPacket.getDistance(), FreecamUtil.getReferencePoint(), 0, pos, processedMonoData, deathVolume));
+                float[] volumes = {volume,volume};
+                appendRecording(() -> PositionalAudioUtils.convertToStereo(processedMonoData, volumes);
                 return;
             }
 
